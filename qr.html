@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pair 𝐃𝐀𝐑𝐊 𝐂𝐘𝐁𝐄𝐑 〽️𝐃</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <video autoplay muted loop id="bgVideo">
+    <source src="cyber.mp4" type="video/mp4">
+  </video>
+
+  <div class="card">
+    <h1>📲</h1>
+    <h1>Scan QR to Link with your whatsapp<br>𝐃𝐀𝐑𝐊 𝐂𝐘𝐁𝐄𝐑 〽️𝐃</h1>
+    <canvas id="qrcode" style="margin: 20px auto;"></canvas>
+    <p id="status">🟡 Waiting for QR code...</p>
+
+    <footer>★ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝐃𝐀𝐑𝐊 𝐂𝐘𝐁𝐄𝐑 〽️𝐃</footer>
+    <footer>• ᴄʀᴇᴀᴛᴏʀ ɪɴᴅᴜᴡᴀʀᴀ ᴅᴇꜱʜᴀɴ</footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('qr', (qr) => {
+      document.getElementById("status").innerText = "✅ Scan the QR using your WhatsApp app.";
+      QRCode.toCanvas(document.getElementById('qrcode'), qr, error => {
+        if (error) console.error(error);
+      });
+    });
+
+    socket.on('ready', () => {
+      document.getElementById("status").innerText = "🎉 WhatsApp is now connected to 𝐃𝐀𝐑𝐊 𝐂𝐘𝐁𝐄𝐑 〽️𝐃!";
+    });
+  </script>
+</body>
+</html>

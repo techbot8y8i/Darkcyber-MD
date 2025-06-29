@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pair 𝐃𝐀𝐑𝐊 𝐂𝐘𝐁𝐄𝐑 〽️𝐃</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <video autoplay muted loop id="bgVideo">
+    <source src="cyber.mp4" type="video/mp4">
+  </video>
+
+  <div class="card">
+    <h1>🔗</h1>
+    <h1>Enter Your Number<br>𝐃𝐀𝐑𝐊 𝐂𝐘𝐁𝐄𝐑 〽️𝐃</h1>
+
+    <input type="text" id="phoneNumber" placeholder="e.g. +94761234567" style="padding: 12px; margin-top: 20px; width: 80%; border-radius: 8px; border: 1px solid #00ff88; outline: none; text-align: center; font-family: 'Orbitron', monospace;">
+
+    <button id="submitBtn" class="btn" style="margin-top: 20px;">Get Code</button>
+
+    <p id="status">🟡 Waiting for your number...</p>
+    <p id="code" style="font-size: 1.5rem; color: #00ff88; margin-top: 15px;"></p>
+
+    <footer>★ ᴘᴏᴡᴇʀᴇᴅ ʙʏ 𝐃𝐀𝐑𝐊 𝐂𝐘𝐁𝐄𝐑 〽️𝐃</footer>
+    <footer>• ᴄʀᴇᴀᴛᴏʀ ɪɴᴅᴜᴡᴀʀᴀ ᴅᴇꜱʜᴀɴ</footer>
+  </div>
+
+  <script>
+    const socket = io();
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const number = document.getElementById("phoneNumber").value.trim();
+      if (number === "") {
+        document.getElementById("status").innerText = "❌ Please enter a valid number.";
+        return;
+      }
+
+      document.getElementById("status").innerText = "⏳ Generating code...";
+      document.getElementById("code").innerText = "";
+
+      // Send to server
+      socket.emit("get-pair-code", number);
+    });
+
+    // Server returns code
+    socket.on("pair-code", (code) => {
+      document.getElementById("status").innerText = "✅ Here is your linking code:";
+      document.getElementById("code").innerText = code;
+    });
+
+    // Optional: handle errors
+    socket.on("pair-error", () => {
+      document.getElementById("status").innerText = "❌ Failed to generate code. Try again.";
+      document.getElementById("code").innerText = "";
+    });
+  </script>
+
+</body>
+</html>
